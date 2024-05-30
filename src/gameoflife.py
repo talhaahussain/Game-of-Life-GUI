@@ -44,29 +44,31 @@ class Cell:
 
 def get_neighbours(x, y):
     x, y = int(x/10), int(y/10) # Converts from Pygame coordinates to cell coordinates
-    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x, y-1), (x, y+1), (x+1, y-1), (x+1, y), (x+1, y+1)) if 0 <=i<10 and 0<=j<10]
+    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)) if 0<=i<50 and 0<=j<50]
     return neighbours
+    
+
 
 def cells_init():
     row = []
     matrix = []
-    for i in range(0, 100, 10):
-        for j in range(0, 100, 10):
-            row.append(Cell(False, get_neighbours(i, j), i, j))
+    for i in range(0, 500, 10):
+        for j in range(0, 500, 10):
+            row.append(Cell(not(bool(random.getrandbits(3))), get_neighbours(i, j), i, j))
         matrix.append(row)
         row = []
 
-    matrix[0][0].alive = True
-    matrix[1][0].alive = True
-    matrix[1][1].alive = True
-    matrix[0][1].alive = True
+    #matrix[0][0].alive = True
+    #matrix[1][0].alive = True
+    #matrix[1][1].alive = True
+    #matrix[0][1].alive = True
 
     return matrix
 
 def main():
     pygame.init()
     cells = cells_init()
-    screen = pygame.display.set_mode((100, 100))
+    screen = pygame.display.set_mode((500, 500))
     clock = pygame.time.Clock()
     running = True
     iteration = 0
@@ -78,14 +80,16 @@ def main():
                 running = False
         screen.fill("white")
 
-        for i in range(10):
-            for j in range(10):
+        for i in range(50):
+            for j in range(50):
                 cells[i][j].draw(screen)
                 cells[i][j].living_neighbours = 0
                 for neighbour in cells[i][j].neighbours:
                     if cells[neighbour[0]][neighbour[1]].alive == True:
                         cells[i][j].living_neighbours += 1
-
+                cells[i][j].tick()
+        
+        """
                 print("I am cell (" + str(i) + "," + str(j) + ") and I have " + str(cells[i][j].living_neighbours) + " living neighbours.") 
                 print("My living neighbours are...\n")
                 for neighbour in cells[i][j].neighbours:
@@ -125,13 +129,14 @@ def main():
                     cells[i][j].colour = "#00ff00"
                 elif cells[i][j].alive == False:
                     cells[i][j].colour = "#000000"
+        """
 
-
-
-
+        for i in range(50):
+            for j in range(50):
+                cells[i][j].update()
 
         pygame.display.flip()
-        clock.tick(0.5)
+        clock.tick(2)
 
     pygame.quit()
 
