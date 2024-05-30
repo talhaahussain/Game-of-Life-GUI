@@ -37,15 +37,24 @@ class Cell:
             self.colour = "#000000"
 
 
+def get_neighbours(x, y):
+    x, y = int(x/10), int(y/10) # Converts from Pygame coordinates to cell coordinates
+    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x, y-1), (x, y+1), (x+1, y-1), (x+1, y), (x+1, y+1)) if 0 <=i<50 and 0<=j<50]
+    return neighbours
+
 def cells_init():
     row = []
     matrix = []
     for i in range(0, 500, 10):
         for j in range(0, 500, 10):
-            row.append(Cell(None, i, j))
+            row.append(Cell(get_neighbours(i, j), i, j))
+            print(get_neighbours(i, j))
+            print("\n")
         matrix.append(row)
         row = []
     
+    #print(matrix[0][0].neighbours)
+    #print(matrix[20][20].neighbours)
     return matrix
 
 def main():
@@ -56,7 +65,7 @@ def main():
     running = True
     iteration = 0
     while running:
-        print(iteration)
+    #    print(iteration)
         iteration = iteration + 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
