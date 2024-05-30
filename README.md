@@ -32,3 +32,7 @@ python gameoflife.py
 ### Notes
 
 Game of Life does not function correctly - see [#1](https://github.com/talhaahussain/Game-of-Life-GUI/issues/1).
+
+### See also
+
+[find_neighbours.py](https://gist.github.com/talhaahussain/133fe1a05242858376341d9401f008bb)
