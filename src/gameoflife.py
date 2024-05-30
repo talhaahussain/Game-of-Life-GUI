@@ -34,22 +34,13 @@ class Cell:
             return
         else:
             self.next_alive = False           
-            """
-            print(self.living_neighbours < 2)
-            print(self.alive)
-            print(self.next_alive)
-            print("FATAL")
-            exit()
-            """
+    
     def update(self):
         self.alive = self.next_alive
         if self.alive == True:
             self.colour = "#00ff00"
         elif self.alive == False:
             self.colour = "#000000"
-        else:
-            print("FATAL ERROR!")
-
 
 def get_neighbours(x, y):
     x, y = int(x/10), int(y/10) # Converts from Pygame coordinates to cell coordinates
@@ -61,10 +52,9 @@ def cells_init():
     matrix = []
     for i in range(0, 500, 10):
         for j in range(0, 500, 10):
-            row.append(Cell(True, get_neighbours(i, j), i, j))
+            row.append(Cell(not(random.getrandbits(3)), get_neighbours(i, j), i, j))
         matrix.append(row)
         row = []
-   # bool(random.getrandbits(3))),
     return matrix
 
 def main():
@@ -89,14 +79,33 @@ def main():
                 for neighbour in cells[i][j].neighbours:
                     if cells[neighbour[0]][neighbour[1]].alive == True:
                         cells[i][j].living_neighbours += 1
-                print("I have... " + str(cells[i][j].living_neighbours))
-                cells[i][j].tick()
+                if cells[i][j].alive == True and cells[i][j].living_neighbours < 2:
+                    cells[i][j].next_alive = False
+                elif cells[i][j].alive == True and cells[i][j].living_neighbours == 2:
+                    cells[i][j].next_alive = True
+                elif cells[i][j].alive == True and cells[i][j].living_neighbours == 3:
+                    cells[i][j].next_alive = True
+                elif cells[i][j].alive == True and cells[i][j].living_neighbours > 3:
+                    cells[i][j].next_alive = False
+                elif cells[i][j].alive == False and cells[i][j].living_neighbours == 3:
+                    cells[i][j].next_alive = True
+                else:
+                    cells[i][j].next_alive = False           
+  
                 
         
         for i in range(50):
             for j in range(50):
-                cells[i][j].update()
-        
+                cells[i][j].alive = cells[i][j].next_alive
+                if cells[i][j].alive == True:
+                    cells[i][j].colour = "#00ff00"
+                elif cells[i][j].alive == False:
+                    cells[i][j].colour = "#000000"
+
+
+
+
+
         pygame.display.flip()
         clock.tick(0.5)
 
