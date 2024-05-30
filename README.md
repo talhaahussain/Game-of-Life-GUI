@@ -8,20 +8,23 @@ Prerequisites are viewable in `requirements.txt`.
 ### Installation
 
 Clone with:
-```
+
+```shell
 git clone https://github.com/talhaahussain/Game-of-Life-GUI.git gameoflife
 cd gameoflife/
 ```
 
 Install prerequisites with:
-```
+
+```shell
 pip install -r requirements.txt
 ```
 
 ### Usage
 
 Run with:
-```
+
+```shell
 cd src/
 python gameoflife.py
 ```
