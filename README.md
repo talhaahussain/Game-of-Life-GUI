@@ -28,4 +28,4 @@ python gameoflife.py
 
 ### Notes
 
-Game of Life does not function correctly - see #1.
+Game of Life does not function correctly - see [#1](https://github.com/talhaahussain/Game-of-Life-GUI/issues/1).
