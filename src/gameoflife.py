@@ -13,7 +13,7 @@ class Cell:
         self.y = y
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.colour, pygame.Rect((self.x, self.y, self.width, self.height)))
+        pygame.draw.rect(screen, self.colour, pygame.Rect((self.x, self.y, self.width-1, self.height-1)))
 
     def tick():
         if (self.alive == True) and (len(self.alive_neighbours) < 2):
@@ -40,8 +40,8 @@ class Cell:
 def cells_init():
     row = []
     matrix = []
-    for i in range(0, 800, 10):
-        for j in range(0, 800, 10):
+    for i in range(0, 500, 10):
+        for j in range(0, 500, 10):
             row.append(Cell(None, i, j))
         matrix.append(row)
         row = []
@@ -51,7 +51,7 @@ def cells_init():
 def main():
     pygame.init()
     cells = cells_init()
-    screen = pygame.display.set_mode((800, 800))
+    screen = pygame.display.set_mode((500, 500))
     clock = pygame.time.Clock()
     running = True
     iteration = 0
@@ -62,8 +62,8 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
         screen.fill("white")
-        for i in range(80):
-            for j in range(80):
+        for i in range(50):
+            for j in range(50):
                 cells[i][j].draw(screen)
 
         pygame.display.flip()
