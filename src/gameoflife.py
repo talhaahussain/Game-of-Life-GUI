@@ -1,10 +1,11 @@
 import pygame
+import random
 
 class Cell:
-    def __init__(self, neighbours, x, y):
-        self.alive = False
+    def __init__(self, alive, neighbours, x, y):
+        self.alive = alive
         self.next_alive = None
-        self.colour = "#000000"
+        self.colour = "#00ff00" if self.alive else "#000000"
         self.neighbours = neighbours
         self.alive_neighbours = None
         self.height = 10
@@ -47,14 +48,12 @@ def cells_init():
     matrix = []
     for i in range(0, 500, 10):
         for j in range(0, 500, 10):
-            row.append(Cell(get_neighbours(i, j), i, j))
+            row.append(Cell(bool(random.getrandbits(1)), get_neighbours(i, j), i, j))
             print(get_neighbours(i, j))
             print("\n")
         matrix.append(row)
         row = []
     
-    #print(matrix[0][0].neighbours)
-    #print(matrix[20][20].neighbours)
     return matrix
 
 def main():
@@ -65,7 +64,7 @@ def main():
     running = True
     iteration = 0
     while running:
-    #    print(iteration)
+#       print(iteration)
         iteration = iteration + 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
