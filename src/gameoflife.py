@@ -7,7 +7,7 @@ class Cell:
         self.next_alive = None
         self.colour = "#00ff00" if self.alive else "#000000"
         self.neighbours = neighbours
-        self.alive_neighbours = None
+        self.living_neighbours = 0
         self.height = 10
         self.width = 10
         self.x = x
@@ -16,26 +16,39 @@ class Cell:
     def draw(self, screen):
         pygame.draw.rect(screen, self.colour, pygame.Rect((self.x, self.y, self.width-1, self.height-1)))
 
-    def tick():
-        if (self.alive == True) and (len(self.alive_neighbours) < 2):
+    def tick(self):
+        if self.alive == True and self.living_neighbours < 2:
             self.next_alive = False
             return
-        if (self.alive == True) and (len(self.alive_neighbours) in [2, 3]):
+        elif self.alive == True and self.living_neighbours == 2:
             self.next_alive = True
             return
-        if (self.alive == True) and (len(self.alive_neighbours) > 3):
+        elif self.alive == True and self.living_neighbours == 3:
+            self.next_alive = True
+            return
+        elif self.alive == True and self.living_neighbours > 3:
             self.next_alive = False
             return
-        if (self.alive == False) and (len(self.alive_neighbours) == 3):
+        elif self.alive == False and self.living_neighbours == 3:
             self.next_alive = True
             return
-
-    def update():
+        else:
+            self.next_alive = False           
+            """
+            print(self.living_neighbours < 2)
+            print(self.alive)
+            print(self.next_alive)
+            print("FATAL")
+            exit()
+            """
+    def update(self):
         self.alive = self.next_alive
         if self.alive == True:
             self.colour = "#00ff00"
-        else:
+        elif self.alive == False:
             self.colour = "#000000"
+        else:
+            print("FATAL ERROR!")
 
 
 def get_neighbours(x, y):
@@ -48,12 +61,10 @@ def cells_init():
     matrix = []
     for i in range(0, 500, 10):
         for j in range(0, 500, 10):
-            row.append(Cell(bool(random.getrandbits(1)), get_neighbours(i, j), i, j))
-            print(get_neighbours(i, j))
-            print("\n")
+            row.append(Cell(True, get_neighbours(i, j), i, j))
         matrix.append(row)
         row = []
-    
+   # bool(random.getrandbits(3))),
     return matrix
 
 def main():
@@ -70,12 +81,24 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
         screen.fill("white")
+
         for i in range(50):
             for j in range(50):
                 cells[i][j].draw(screen)
-
+                cells[i][j].living_neighbours = 0
+                for neighbour in cells[i][j].neighbours:
+                    if cells[neighbour[0]][neighbour[1]].alive == True:
+                        cells[i][j].living_neighbours += 1
+                print("I have... " + str(cells[i][j].living_neighbours))
+                cells[i][j].tick()
+                
+        
+        for i in range(50):
+            for j in range(50):
+                cells[i][j].update()
+        
         pygame.display.flip()
-        clock.tick()
+        clock.tick(0.5)
 
 
     pygame.quit()
