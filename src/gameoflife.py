@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 
 class Cell:
     def __init__(self, alive, neighbours, x, y):
@@ -66,7 +65,6 @@ def main():
     clock = pygame.time.Clock()
     running = True
     iteration = 0
-    time.sleep(60)
     while running:
         iteration = iteration + 1
         for event in pygame.event.get():
