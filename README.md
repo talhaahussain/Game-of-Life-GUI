@@ -1,7 +1,8 @@
 # Game-of-Life-GUI
 An implementation of John Horton Conway's Game of Life (1970) as a graphical user interface. The Game of Life is a Turing complete cellular automation, with evolution determined entirely by its initial state. This implementation is written in Python, using the Pygame library.
 
-![gif](https://github.com/talhaahussain/Game-of-Life-GUI/blob/main/game.gif)
+<img src="https://github.com/talhaahussain/Game-of-Life-GUI/blob/main/game.gif" alt="A GIF demonstration of the Game of Life" width=600 height=600>
+
 
 ### Prerequisites
 
