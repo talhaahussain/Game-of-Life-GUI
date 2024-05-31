@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 class Cell:
     def __init__(self, alive, neighbours, x, y):
@@ -44,14 +45,14 @@ class Cell:
 
 def get_neighbours(x, y):
     x, y = int(x/10), int(y/10) # Converts from Pygame coordinates to cell coordinates
-    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)) if 0<=i<100 and 0<=j<100]
+    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)) if 0<=i<75 and 0<=j<75]
     return neighbours
 
 def cells_init():
     row = []
     matrix = []
-    for i in range(0, 1000, 10):
-        for j in range(0, 1000, 10):
+    for i in range(0, 750, 10):
+        for j in range(0, 750, 10):
             row.append(Cell(not(bool(random.getrandbits(3))), get_neighbours(i, j), i, j))
         matrix.append(row)
         row = []
@@ -61,10 +62,11 @@ def cells_init():
 def main():
     pygame.init()
     cells = cells_init()
-    screen = pygame.display.set_mode((1000, 1000))
+    screen = pygame.display.set_mode((750, 750))
     clock = pygame.time.Clock()
     running = True
     iteration = 0
+    time.sleep(60)
     while running:
         iteration = iteration + 1
         for event in pygame.event.get():
@@ -72,8 +74,8 @@ def main():
                 running = False
         screen.fill("white")
 
-        for i in range(100):
-            for j in range(100):
+        for i in range(75):
+            for j in range(75):
                 cells[i][j].draw(screen)
                 cells[i][j].living_neighbours = 0
                 for neighbour in cells[i][j].neighbours:
@@ -81,8 +83,8 @@ def main():
                         cells[i][j].living_neighbours += 1
                 cells[i][j].tick()
          
-        for i in range(100):
-            for j in range(100):
+        for i in range(75):
+            for j in range(75):
                 cells[i][j].update()
 
         pygame.display.flip()
