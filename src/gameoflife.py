@@ -1,5 +1,17 @@
 import pygame
 import random
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-n")
+args = parser.parse_args()
+
+if args.n == "von-neumann" or args.n == "moore":
+    neighbour_mode = args.n
+else:
+    print("Invalid argument. Please try again.\n")
+    print("(Hint - Try run the program with \"-n von-neumann\" or \"-n moore\".)\n")
+    exit(1)
 
 class Cell:
     def __init__(self, alive, neighbours, x, y):
@@ -44,7 +56,10 @@ class Cell:
 
 def get_neighbours(x, y):
     x, y = int(x/10), int(y/10) # Converts from Pygame coordinates to cell coordinates
-    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)) if 0<=i<75 and 0<=j<75]
+    if neighbour_mode == "moore":
+        neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)) if 0<=i<75 and 0<=j<75]
+    else:
+        neighbours = [(i, j) for i, j in ((x, y-1), (x-1, y), (x+1, y), (x, y+1)) if 0<=i<75 and 0<=j<75]
     return neighbours
 
 def cells_init():
