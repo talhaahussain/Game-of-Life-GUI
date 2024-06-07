@@ -7,14 +7,12 @@ A (mostly) object-oriented implementation of John Horton Conway's Game of Life (
 
 ### Description
 
-Game of Life is a cellular automaton that involves a universe of square cells, arranged in a grid. A cell can either be alive or dead, and interacts with 8 neighbours*, in all 8 directions. At each time step, each cell follows these rules:
+Game of Life is a cellular automaton that involves a universe of square cells, arranged in a grid. A cell can either be alive or dead, and interacts with neighbours, in either all 8 directions (Moore neighbourhood), or the 4 non-diagnoal directions (von Neumann neighbourhood). At each time step, each cell follows these rules:
 
 - A live cell with less than 2 alive neighbours dies (starvation)
 - A live cell with 2 or 3 alive neighbours remains alive
 - A live cell with more than 3 alive neighbours dies (overpopulation)
 - A dead cell with exactly 3 alive neighbours becomes live (reproduction)
-
-**this implementation uses the Moore neighbourhood; future versions may support Moore or von Neumann neighbourhoods.*
 
 Currently, this version of Game of Life only allows for random initial seeds; future versions will support user input to customise the initial state.
 
@@ -39,11 +37,19 @@ pip install -r requirements.txt
 
 ### Usage
 
-Run with:
+For Moore neighbourhood, run with:
 
 ```shell
 cd src/
-python gameoflife.py
+python gameoflife.py -n moore
+```
+
+For von Neumann neighbourhood, run with:
+
+
+```shell
+cd src/
+python gameoflife.py -n von-neumann
 ```
 
 ### See also
