@@ -3,7 +3,7 @@ import random
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-s", "--size", type=int, default=750, help="Width/height of the square window")
+parser.add_argument("-s", type=int, default=750, help="Width/height of the square window")
 args = parser.parse_args()
 
 if args.s <= 0:
@@ -53,14 +53,14 @@ class Cell:
 
 def get_neighbours(x, y):
     x, y = int(x/10), int(y/10) # Converts from Pygame coordinates to cell coordinates
-    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)) if 0<=i<75 and 0<=j<75]
+    neighbours = [(i, j) for i, j in ((x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)) if 0<=i<int(args.s/10) and 0<=j<int(args.s/10)]
     return neighbours
 
 def cells_init():
     row = []
     matrix = []
-    for i in range(0, 750, 10):
-        for j in range(0, 750, 10):
+    for i in range(0, args.s, 10):
+        for j in range(0, args.s, 10):
             row.append(Cell(not(bool(random.getrandbits(3))), get_neighbours(i, j), i, j))
         matrix.append(row)
         row = []
@@ -70,7 +70,7 @@ def cells_init():
 def main():
     pygame.init()
     cells = cells_init()
-    screen = pygame.display.set_mode((750, 750))
+    screen = pygame.display.set_mode((args.s, args.s))
     clock = pygame.time.Clock()
     running = True
     iteration = 0
@@ -81,8 +81,8 @@ def main():
                 running = False
         screen.fill("white")
 
-        for i in range(75):
-            for j in range(75):
+        for i in range(int(args.s/10)):
+            for j in range(int(args.s/10)):
                 cells[i][j].draw(screen)
                 cells[i][j].living_neighbours = 0
                 for neighbour in cells[i][j].neighbours:
@@ -90,8 +90,8 @@ def main():
                         cells[i][j].living_neighbours += 1
                 cells[i][j].tick()
          
-        for i in range(75):
-            for j in range(75):
+        for i in range(int(args.s/10)):
+            for j in range(int(args.s/10)):
                 cells[i][j].update()
 
         pygame.display.flip()
