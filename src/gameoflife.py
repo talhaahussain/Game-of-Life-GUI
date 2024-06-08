@@ -3,6 +3,12 @@ import random
 import argparse
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--size", type=int, default=750, help="Width/height of the square window")
+args = parser.parse_args()
+
+if args.s <= 0:
+    print("Invalid argument. Please try again.\n")
+    exit(1)
 
 class Cell:
     def __init__(self, alive, neighbours, x, y):
