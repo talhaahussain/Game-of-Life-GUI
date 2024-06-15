@@ -1,6 +1,8 @@
 import pygame
 import random
 import argparse
+import cv2
+import numpy
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", type=int, default=750, help="Width/height of the square window")
@@ -67,8 +69,29 @@ def cells_init():
 
     return matrix
 
+
+def concat_frames_into_video(filename, frames, fps):
+    for i in range(len(frames)):
+        frames[i] = numpy.array(pygame.surfarray.pixels3d(frames[i]))
+        frames[i] = numpy.transpose(frames[i], (1, 0, 2))
+        frames[i] = cv2.cvtColor(frames[i], cv2.COLOR_RGB2BGR)
+
+
+    height, width, channels = frames[0].shape
+
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(filename, fourcc, fps, (width, height))
+
+    for frame in frames:
+        out.write(frame)
+
+    out.release()
+
+
+
 def main():
     pygame.init()
+    frames = []
     cells = cells_init()
     screen = pygame.display.set_mode((args.s, args.s))
     clock = pygame.time.Clock()
@@ -94,10 +117,13 @@ def main():
             for j in range(int(args.s/10)):
                 cells[i][j].update()
 
+        screen_copy = screen.copy()
+        frames.append(screen_copy)
+ 
         pygame.display.flip()
         clock.tick(60)
 
     pygame.quit()
-
+    concat_frames_into_video("out.mp4", frames, 60)
 
 main()
